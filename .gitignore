@@ -208,4 +208,5 @@ __marimo__/
 
 
 data/raw/
-data/processed/segmented_audio/
+data/processed_audio/
+data/*.csv
