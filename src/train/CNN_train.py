@@ -13,19 +13,19 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
-from src.models.CNN_model import DeepAudioCNN
+from src.models.CNN_model import AudioCNN
 from src.data_processing.urbansound_dataset import UrbanSoundDataset
 
-def train_deepcnn(
+def train_cnn(
     csv_file="data/train_split.csv",
     audio_dir="data/processed_audio",
     val_csv="data/val_split.csv",
     batch_size=32,
-    epochs=30,
+    epochs=50,
     lr=0.001,
     device="cuda" if torch.cuda.is_available() else "cpu"
 ):
-    print(f"Training DeepCNN on device: {device}")
+    print(f"Training AudioCNN on device: {device}")
     
     train_dataset = UrbanSoundDataset(csv_file=csv_file, audio_dir=audio_dir)
     val_dataset = UrbanSoundDataset(csv_file=val_csv, audio_dir=audio_dir)
@@ -33,7 +33,7 @@ def train_deepcnn(
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=2)
     
-    model = DeepAudioCNN(n_classes=10).to(device)
+    model = AudioCNN(n_classes=10).to(device)
     
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4) 
@@ -101,13 +101,13 @@ def train_deepcnn(
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             os.makedirs("models", exist_ok=True)
-            torch.save(model.state_dict(), "models/best_deepcnn.pth")
+            torch.save(model.state_dict(), "models/best_cnn.pth")
             print(">> Най-добрият модел (Best Val Loss) е запазен!")
             
-    with open("models/deepcnn_history.json", "w") as f:
+    with open("models/cnn_history.json", "w") as f:
         json.dump(history, f, indent=4)
         
-    print("Тренирането завърши! Метриките са запазени в models/deepcnn_history.json")
+    print("Тренирането завърши! Метриките са запазени в models/cnn_history.json")
 
 if __name__ == "__main__":
-    train_deepcnn()
+    train_cnn()

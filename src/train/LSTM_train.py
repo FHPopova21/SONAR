@@ -1,55 +1,123 @@
+import os
+import sys
+
+# Добавяме главната директория на проекта към пътя, за да работи относителния импорт (src.models...)
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+if project_root not in sys.path:
+    sys.path.append(project_root)
+
+import json
 import torch
 import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader
+from tqdm import tqdm
 
-class AudioLSTM(nn.Module):
-    def __init__(self, n_feature=128, out_feature=10, n_hidden=256, n_layers=2, drop_prob=0.3):
-        super().__init__()
+from src.models.LSTM import AudioLSTM
+from src.data_processing.urbansound_dataset import UrbanSoundDataset
 
-        self.n_hidden = n_hidden
-        self.n_layers = n_layers
+def train_lstm(
+    csv_file="data/train_split.csv",
+    audio_dir="data/processed_audio",
+    val_csv="data/val_split.csv",
+    batch_size=32,
+    epochs=30,
+    lr=0.001,
+    device="cuda" if torch.cuda.is_available() else "cpu"
+):
+    print(f"Training LSTM on device: {device}")
+    
+    # 1. Зареждане на данните
+    train_dataset = UrbanSoundDataset(csv_file=csv_file, audio_dir=audio_dir)
+    val_dataset = UrbanSoundDataset(csv_file=val_csv, audio_dir=audio_dir)
+    
+    train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
+    val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=2)
+    
+    # 2. Инициализация на модела
+    # Внимание: LSTM приема n_feature=128 (ако подаваме Мел-спектрограми директно от Dataset)
+    model = AudioLSTM(n_feature=128, out_feature=10).to(device)
+    
+    # 3. Loss & Optimizer
+    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4) # L2 Регуляризация
+    
+    # Регулатор на learning rate
+    scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=3)
 
-        # Самата LSTM мрежа
-        self.lstm = nn.LSTM(
-            n_feature,
-            n_hidden,
-            n_layers,
-            dropout=drop_prob,
-            batch_first=True,
-            bidirectional=True # Чете звука и напред, и назад!
-        )
+    history = {
+        'train_loss': [], 'train_acc': [],
+        'val_loss': [], 'val_acc': []
+    }
+    
+    best_val_loss = float('inf')
+    
+    # 4. Тренировъчен цикъл
+    for epoch in range(epochs):
+        model.train()
+        running_loss = 0.0
+        correct = 0
+        total = 0
+        
+        for inputs, labels in tqdm(train_loader, desc=f"Epoch {epoch+1}/{epochs} [Train]"):
+            inputs, labels = inputs.to(device), labels.to(device)
+            
+            optimizer.zero_grad()
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            
+            loss.backward()
+            optimizer.step()
+            
+            running_loss += loss.item()
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+            
+        train_loss = running_loss / len(train_loader)
+        train_acc = 100 * correct / total
+        
+        # 5. Валидация
+        model.eval()
+        val_loss = 0.0
+        val_correct = 0
+        val_total = 0
+        
+        with torch.no_grad():
+            for inputs, labels in tqdm(val_loader, desc=f"Epoch {epoch+1}/{epochs} [Val]"):
+                inputs, labels = inputs.to(device), labels.to(device)
+                outputs = model(inputs)
+                loss = criterion(outputs, labels)
+                
+                val_loss += loss.item()
+                _, predicted = torch.max(outputs.data, 1)
+                val_total += labels.size(0)
+                val_correct += (predicted == labels).sum().item()
+                
+        val_loss = val_loss / len(val_loader)
+        val_acc = 100 * val_correct / val_total
+        
+        scheduler.step(val_loss)
+        
+        print(f"Epoch [{epoch+1}/{epochs}] | Train Loss: {train_loss:.4f} Acc: {train_acc:.2f}% | Val Loss: {val_loss:.4f} Acc: {val_acc:.2f}%")
+        
+        history['train_loss'].append(train_loss)
+        history['train_acc'].append(train_acc)
+        history['val_loss'].append(val_loss)
+        history['val_acc'].append(val_acc)
+        
+        # Запазване на най-добрия модел
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            os.makedirs("models", exist_ok=True)
+            torch.save(model.state_dict(), "models/best_lstm.pth")
+            print(">> Най-добрият модел (Best Val Loss) е запазен!")
+            
+    # Запазване на историята на тренирането
+    with open("models/lstm_history.json", "w") as f:
+        json.dump(history, f, indent=4)
+        
+    print("Тренирането завърши! Метриките са запазени в models/lstm_history.json")
 
-        self.layer_norm = nn.LayerNorm(n_hidden * 2)
-        self.dropout = nn.Dropout(drop_prob)
-
-        self.fc1 = nn.Linear(n_hidden * 2, n_hidden)
-        self.fc2 = nn.Linear(n_hidden, out_feature)
-
-        self.relu = nn.ReLU()
-
-    def forward(self, x):
-        # ПРОМЯНА 2: Адаптираме формата на данните (от CNN към LSTM)
-        # Вход x: (batch_size, 1, 128, time_steps)
-        x = x.squeeze(1)             # Махаме канала: става (batch_size, 128, time_steps)
-        x = x.permute(0, 2, 1)       # Разменяме осите: става (batch_size, time_steps, 128)
-
-        # ПРОМЯНА 3: Инициализираме hidden state тук, за да не чупим тренировъчния цикъл
-        batch_size = x.size(0)
-        device = x.device
-        h0 = torch.zeros(self.n_layers * 2, batch_size, self.n_hidden, device=device)
-        c0 = torch.zeros(self.n_layers * 2, batch_size, self.n_hidden, device=device)
-        hidden = (h0, c0)
-
-        # Пускаме през LSTM
-        l_out, hidden = self.lstm(x, hidden)
-
-        # Взимаме само последния времеви момент (какво е разбрала мрежата в края на звука)
-        last_out = l_out[:, -1, :]  # (batch, hidden*2)
-        last_out = self.layer_norm(last_out)
-
-        # Класификатор
-        out = self.dropout(last_out)
-        out = self.relu(self.fc1(out))
-        out = self.fc2(out)
-
-        # Връщаме само изхода (out), за да пасне перфектно на твоя код за Loss и Accuracy!
-        return out
+if __name__ == "__main__":
+    train_lstm()
