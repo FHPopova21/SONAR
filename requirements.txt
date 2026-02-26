@@ -10,3 +10,4 @@ flask
 flask-sqlalchemy
 flask-cors
 tqdm
+coremltools
