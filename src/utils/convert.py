@@ -7,7 +7,9 @@ if project_root not in sys.path:
 
 import torch
 import coremltools as ct
-from src.models.CNN_model import AudioCNN
+from src.models.CNN_model import AudioCNN, DeepAudioCNN
+from src.models.mobilenet_model import AudioMobileNetV2
+from src.models.LSTM import AudioLSTM
 
 # 1. Зареждаш модела
 model = AudioCNN()
