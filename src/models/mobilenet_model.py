@@ -34,10 +34,12 @@ class AudioMobileNetV2(nn.Module):
         self.model.features[0][0] = new_first_layer
         
         # 3. Адаптираме изхода (Класификатора)
-        # MobileNetV2 фабрично класифицира 1000 класа (кучета, котки, коли...)
-        # Ние махаме последния слой и слагаме такъв с нашите 50 аудио класа!
+        # Увеличаваме Dropout-а на 0.5 за по-добра регуляризация
         in_features = self.model.classifier[1].in_features
-        self.model.classifier[1] = nn.Linear(in_features, n_classes)
+        self.model.classifier = nn.Sequential(
+            nn.Dropout(p=0.5, inplace=False),
+            nn.Linear(in_features, n_classes)
+        )
 
     def forward(self, x):
         return self.model(x)

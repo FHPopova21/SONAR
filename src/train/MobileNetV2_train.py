@@ -15,6 +15,7 @@ from tqdm import tqdm
 
 from src.models.mobilenet_model import AudioMobileNetV2
 from src.data_processing.urbansound_dataset import UrbanSoundDataset
+from src.data_processing.augmentation import SpecAugment
 
 def train_mobilenet(
     csv_file="data/train_split.csv",
@@ -26,17 +27,30 @@ def train_mobilenet(
     device="cuda" if torch.cuda.is_available() else "cpu"
 ):
     print(f"Training MobileNetV2 on device: {device}")
+
+    train_transform = SpecAugment(freq_mask_param=20, time_mask_param=40)
     
-    train_dataset = UrbanSoundDataset(csv_file=csv_file, audio_dir=audio_dir)
-    val_dataset = UrbanSoundDataset(csv_file=val_csv, audio_dir=audio_dir)
+    train_dataset = UrbanSoundDataset(csv_file=csv_file,
+                audio_dir=audio_dir,
+                transform=train_transform)
+    
+    val_dataset = UrbanSoundDataset(csv_file=val_csv,
+                audio_dir=audio_dir,
+                transform=None)
     
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=2)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, num_workers=2)
     
     model = AudioMobileNetV2(n_classes=10).to(device)
     
-    criterion = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-4) 
+    # Дефиниране на тежести за класовете:
+    # Увеличаваме тежестта за класове като air_conditioner (0) и drilling (4)
+    class_weights = torch.ones(10).to(device)
+    class_weights[0] = 2.0  # air_conditioner
+    class_weights[4] = 2.0  # drilling
+    
+    criterion = nn.CrossEntropyLoss(weight=class_weights)
+    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=1e-3) # Увеличен Weight Decay
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=3)
 
     history = {
@@ -45,6 +59,8 @@ def train_mobilenet(
     }
     
     best_val_loss = float('inf')
+    early_stopping_patience = 5
+    patience_counter = 0
     
     for epoch in range(epochs):
         model.train()
@@ -100,10 +116,17 @@ def train_mobilenet(
         
         if val_loss < best_val_loss:
             best_val_loss = val_loss
+            patience_counter = 0 # Нулираме брояча при подобрение
             os.makedirs("models", exist_ok=True)
             torch.save(model.state_dict(), "models/best_mobilenet.pth")
             print(">> Най-добрият модел (Best Val Loss) е запазен!")
-            
+        else:
+            patience_counter += 1
+            print(f">> Няма подобрение {patience_counter}/{early_stopping_patience} епохи.")
+            if patience_counter >= early_stopping_patience:
+                print(f"Early stopping trigger! Спираме тренирането след {epoch+1} епохи.")
+                break
+                
     with open("models/mobilenet_history.json", "w") as f:
         json.dump(history, f, indent=4)
         
