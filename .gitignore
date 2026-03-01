@@ -210,3 +210,6 @@ __marimo__/
 data/raw/
 data/processed_audio/
 data/*.csv
+
+# macOS
+.DS_Store
