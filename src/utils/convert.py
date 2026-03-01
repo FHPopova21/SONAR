@@ -7,26 +7,23 @@ if project_root not in sys.path:
 
 import torch
 import coremltools as ct
-from src.models.CNN_model import AudioCNN, DeepAudioCNN
 from src.models.mobilenet_model import AudioMobileNetV2
-from src.models.LSTM import AudioLSTM
 
-# 1. Зареждаш модела
-model = AudioCNN()
-model_path = os.path.join(project_root, "models", "audio_CNN.pth")
-model.load_state_dict(torch.load(model_path))
+model = AudioMobileNetV2(n_classes=10, pretrained=False)
+model_path = os.path.join(project_root, "models", "best_mobilenet.pth")
+
+model.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
 model.eval()
 
-# 2. Примерен вход (dummy input)
-example_input = torch.rand(1, 1, 128, 173)
+example_input = torch.rand(1, 1, 256, 173)
 
-# 3. Trace
 traced_model = torch.jit.trace(model, example_input)
 
-# 4. Конвертиране
+print("Започва конвертиране към CoreML...")
 mlmodel = ct.convert(
     traced_model,
     inputs=[ct.TensorType(shape=example_input.shape)]
 )
 
-mlmodel.save("SonarCNN.mlpackage")
+mlmodel.save("SonarMobileNet.mlpackage")
+print("✅ Успешно запазен като SonarMobileNet.mlpackage (Размер на входа: 1x1x256x173)!")
