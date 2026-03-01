@@ -4,6 +4,9 @@ import sys
 # Добавяме текущата директория към пътя, за да може Python да види пакета 'src'
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '.')))
 
+# Fix for Windows console encoding
+sys.stdout.reconfigure(encoding='utf-8')
+
 from src.data_processing.build_dataset_final import run_full_build_pipeline
 from src.data_processing.splitting import split_dataset_final
 

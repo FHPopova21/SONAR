@@ -3,7 +3,7 @@ import torch.nn as nn
 from torchvision import models
 
 class AudioMobileNetV2(nn.Module):
-    def __init__(self, n_classes=50, pretrained=True):
+    def __init__(self, n_classes=8, pretrained=True):
         super(AudioMobileNetV2, self).__init__()
         
         # 1. Зареждаме готовия MobileNetV2
