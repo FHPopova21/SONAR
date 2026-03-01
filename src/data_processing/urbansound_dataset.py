@@ -32,11 +32,8 @@ class UrbanSoundDataset(Dataset):
         
         audio_path = os.path.join(self.audio_dir, file_name)
         
-        # Зареждане на аудиото (вече е точно 4.0 секунди на 22050 Hz)
-        audio, sr = librosa.load(audio_path, sr=None) 
-        
         # Извличане на мел-спектрограма
-        mel_spec = extract_mel_spectrogram(audio, sr=sr)
+        mel_spec = extract_mel_spectrogram(audio_path)
         
         # Форматиране (нормализация и добавяне на канал)
         mel_tensor_np = format_for_mel(mel_spec)

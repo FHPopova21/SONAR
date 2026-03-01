@@ -13,6 +13,9 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from tqdm import tqdm
 
+# Fix for Windows console encoding
+sys.stdout.reconfigure(encoding='utf-8')
+
 from src.models.mobilenet_model import AudioMobileNetV2
 from src.data_processing.urbansound_dataset import UrbanSoundDataset
 from src.data_processing.augmentation import SpecAugment
@@ -118,7 +121,7 @@ def train_mobilenet(
             best_val_loss = val_loss
             patience_counter = 0 # Нулираме брояча при подобрение
             os.makedirs("models", exist_ok=True)
-            torch.save(model.state_dict(), "models/best_mobilenet.pth")
+            torch.save(model.state_dict(), "models/3_mobilenet.pth")
             print(">> Най-добрият модел (Best Val Loss) е запазен!")
         else:
             patience_counter += 1

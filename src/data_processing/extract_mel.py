@@ -4,11 +4,31 @@ import librosa
 import librosa.display
 import numpy as np 
 
-def extract_mel_spectrogram(y, sr, n_mels = 256, fmax = 8000, n_fft = 2048, hop_length = 512):
-    # Convert to mel spectrogram
-    mel_spectrogram = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=n_mels, fmax=fmax, n_fft=n_fft, hop_length=hop_length)
+def extract_mel_spectrogram(file_path):
+    # 1. Зареждаме аудиото твърдо на 22050 Hz
+    y, sr = librosa.load(file_path, sr=22050)
     
-    # Convert to decibels
-    mel_spectrogram_db = librosa.power_to_db(mel_spectrogram, ref=np.max)
+    # 2. Изрязваме или допълваме с нули до ТОЧНО 4 секунди (88200 семпъла)
+    target_samples = int(4.0 * sr)
+    if len(y) > target_samples:
+        y = y[:target_samples]
+    else:
+        y = np.pad(y, (0, target_samples - len(y)), mode='constant')
+        
+    # 3. МАГИЯТА: Генерираме Мел-спектрограмата
+    S = librosa.feature.melspectrogram(
+        y=y, 
+        sr=sr, 
+        n_fft=2048, 
+        hop_length=512, 
+        n_mels=128,       # Променено на 128
+        fmin=0.0, 
+        fmax=8000.0,      # Ограничено до 8000 Hz
+        center=True       # ВАЖНО: Добавя падинга!
+    )
     
-    return mel_spectrogram_db
+    # 4. Преобразуване в Децибели (С фиксиран референс за Swift)
+    S_db = librosa.power_to_db(S, ref=1.0)
+    
+    # Резултатът ще бъде матрица с размери точно (128, 173)
+    return S_db
