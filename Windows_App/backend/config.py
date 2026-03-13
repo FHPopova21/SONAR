@@ -1,11 +1,21 @@
 import os
+import sys
 
 # Пътища
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', '..'))
-MODELS_DIR = os.path.join(PROJECT_ROOT, 'models')
+if getattr(sys, 'frozen', False):
+    # Когато приложението е пакетирано (PyInstaller)
+    BASE_DIR = sys._MEIPASS
+    PROJECT_ROOT = BASE_DIR
+    MODELS_DIR = os.path.join(BASE_DIR, 'models')
+    WEB_DIR = os.path.join(BASE_DIR, 'dist')
+else:
+    # Когато се стартира нормално
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    PROJECT_ROOT = os.path.abspath(os.path.join(BASE_DIR, '..', '..'))
+    MODELS_DIR = os.path.join(PROJECT_ROOT, 'models')
+    WEB_DIR = os.path.join(BASE_DIR, '..', 'frontend', 'dist')
+
 WEIGHTS_PATH = os.path.join(MODELS_DIR, 'best_mobilenet.pth')
-WEB_DIR = os.path.join(BASE_DIR, '..', 'frontend', 'dist')
 
 # Настройки за анализ
 COOLDOWN_SECONDS = 5.0

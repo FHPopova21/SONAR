@@ -15,3 +15,4 @@ ipywidgets
 eel
 sounddevice
 pyinstaller
+setuptools<70
