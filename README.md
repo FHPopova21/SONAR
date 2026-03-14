@@ -3,6 +3,12 @@
 # 🎧 SONAR 
 **Ambient Sound Awareness System**
 
+[![Website](https://img.shields.io/badge/Official_Website-Live-success?style=for-the-badge&logo=vercel)](https://sonar-omega.vercel.app/)
+
+🌐 **Официален сайт (Live Demo):** [sonar-omega.vercel.app](https://sonar-omega.vercel.app/)
+
+---
+
 [![Swift](https://img.shields.io/badge/Swift-iOS_%7C_watchOS-FA7343?style=for-the-badge&logo=swift&logoColor=white)]()
 [![Python](https://img.shields.io/badge/Python-Backend-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
 [![React](https://img.shields.io/badge/React-Windows_UI-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)]()
