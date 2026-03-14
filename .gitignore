@@ -206,15 +206,16 @@ marimo/_static/
 marimo/_lsp/
 __marimo__/
 
-
+#Data
 data/raw/
 data/processed_audio/
 data/*.csv
+data/Dataset_Final
 
 # macOS
 .DS_Store
 
-data/Dataset_Final
-
+#Node.js
 Windows_App/frontend/node_modules
+Web_App/node_modules
 
