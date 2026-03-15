@@ -24,7 +24,7 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
+    <section id="how-it-works" className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
       {/* Animated Background Blobs */}
       <motion.div
         className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#ec4899] opacity-20 blur-[200px] rounded-full"

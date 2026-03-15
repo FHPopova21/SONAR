@@ -11,7 +11,7 @@ const technologies = [
 
 export function TechStackSection() {
   return (
-    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
+    <section id="tech" className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
       {/* Background Glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-[#ff6b35] opacity-10 blur-[180px]" />
 

@@ -1,12 +1,28 @@
 import { motion } from "motion/react";
-import { Play, Volume2, AlertTriangle } from "lucide-react";
-import { useState } from "react";
+import { Play, Volume2, AlertTriangle, RotateCcw } from "lucide-react";
+import { useState, useRef } from "react";
 
 export function DemoSection() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
+  };
+
+  const handleRestart = () => {
+    setIsPlaying(true);
+    if (videoRef.current) {
+      videoRef.current.currentTime = 0;
+      videoRef.current.play();
+    }
+  };
 
   return (
-    <section className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
+    <section id="demo" className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
       {/* Background Glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-gradient-to-r from-[#a855f7] via-[#ec4899] to-[#ff6b35] opacity-10 blur-[200px]" />
 
@@ -42,121 +58,57 @@ export function DemoSection() {
           <div className="relative backdrop-blur-xl bg-white/[0.05] border-2 border-white/10 rounded-[2rem] p-4 shadow-2xl">
             {/* Video Display Area */}
             <div className="relative aspect-video bg-gradient-to-br from-purple-950/50 to-black rounded-2xl overflow-hidden">
-              {/* Placeholder Video Content */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                {!isPlaying ? (
+              <video
+                ref={videoRef}
+                className={`w-full h-full object-cover transition-opacity duration-700 ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
+                src="/demo_sonar.mov"
+                playsInline
+                onEnded={() => setIsPlaying(false)}
+              />
+
+              {/* Play Button Overlay */}
+              {!isPlaying && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-sm">
                   <motion.button
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    onClick={() => setIsPlaying(true)}
-                    className="w-24 h-24 rounded-full bg-gradient-to-br from-[#ff6b35] to-[#ec4899] flex items-center justify-center shadow-[0_0_60px_rgba(255,107,53,0.6)] hover:shadow-[0_0_80px_rgba(255,107,53,0.8)] transition-all duration-300"
+                    onClick={handlePlay}
+                    className="w-24 h-24 rounded-full bg-gradient-to-br from-[#ff6b35] to-[#ec4899] flex items-center justify-center shadow-[0_0_60px_rgba(255,107,53,0.6)] hover:shadow-[0_0_80px_rgba(255,107,53,0.8)] transition-all duration-300 z-20"
                   >
                     <Play className="w-10 h-10 text-white fill-white ml-1" />
                   </motion.button>
-                ) : (
-                  <div className="w-full h-full flex flex-col items-center justify-center gap-8 p-12">
-                    {/* Alert Indicator */}
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      className="backdrop-blur-xl bg-red-500/20 border-2 border-red-500 rounded-3xl px-8 py-6 flex items-center gap-4"
-                    >
-                      <motion.div
-                        animate={{
-                          rotate: [0, 10, -10, 0],
-                        }}
-                        transition={{
-                          duration: 0.5,
-                          repeat: Infinity,
-                        }}
-                      >
-                        <AlertTriangle className="w-12 h-12 text-red-500" />
-                      </motion.div>
-                      <div>
-                        <div className="text-3xl mb-1" style={{ fontWeight: 700 }}>
-                          Сирена: 95%
-                        </div>
-                        <div className="text-sm opacity-70">Разпозната заплаха</div>
-                      </div>
-                    </motion.div>
 
-                    {/* Audio Visualization */}
-                    <div className="flex items-center gap-6">
-                      <Volume2 className="w-8 h-8 text-[#ff6b35]" />
-                      <div className="flex items-end gap-1 h-24">
-                        {Array.from({ length: 50 }).map((_, i) => (
-                          <motion.div
-                            key={i}
-                            className="w-2 bg-gradient-to-t from-[#ff6b35] to-[#ec4899] rounded-full"
-                            animate={{
-                              height: [
-                                `${30 + Math.random() * 50}%`,
-                                `${40 + Math.random() * 60}%`,
-                                `${30 + Math.random() * 50}%`,
-                              ],
-                            }}
-                            transition={{
-                              duration: 0.3 + Math.random() * 0.4,
-                              repeat: Infinity,
-                              ease: "easeInOut",
-                            }}
-                          />
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Status Info */}
-                    <div className="grid grid-cols-3 gap-6 w-full max-w-2xl">
-                      {[
-                        { label: "Латентност", value: "12ms" },
-                        { label: "Точност", value: "95.2%" },
-                        { label: "Модел", value: "MobileNetV2" },
-                      ].map((stat, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, y: 20 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.3 + i * 0.1 }}
-                          className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-2xl p-4 text-center"
-                        >
-                          <div className="text-2xl mb-1" style={{ fontWeight: 700, color: "#ff6b35" }}>
-                            {stat.value}
-                          </div>
-                          <div className="text-sm opacity-60">{stat.label}</div>
-                        </motion.div>
-                      ))}
-                    </div>
+                  {/* Decorative Grid Overlay (Visible when not playing) */}
+                  <div className="absolute inset-0 opacity-10 pointer-events-none">
+                    <div className="w-full h-full" style={{
+                      backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
+                      backgroundSize: "60px 60px"
+                    }} />
                   </div>
-                )}
-              </div>
-
-              {/* Decorative Grid Overlay */}
-              <div className="absolute inset-0 opacity-5 pointer-events-none">
-                <div className="w-full h-full" style={{
-                  backgroundImage: "linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)",
-                  backgroundSize: "50px 50px"
-                }} />
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Control Bar */}
             <div className="mt-4 flex items-center justify-between px-4">
               <div className="flex items-center gap-3">
-                <div className="w-3 h-3 rounded-full bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)] animate-pulse" />
-                <span className="text-sm opacity-60">Live Demo</span>
+                <div className={`w-3 h-3 rounded-full ${isPlaying ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)] animate-pulse' : 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.8)]'}`} />
+                <span className="text-sm opacity-60 font-medium">
+                  {isPlaying ? 'Сега се изпълнява' : 'Готов за демонстрация'}
+                </span>
               </div>
-              {isPlaying && (
+              <div className="flex gap-2">
                 <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
                   whileHover={{ scale: 1.05 }}
-                  onClick={() => setIsPlaying(false)}
-                  className="px-4 py-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-sm hover:bg-white/20 transition-all"
-                  style={{ fontWeight: 600 }}
+                  onClick={handleRestart}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl backdrop-blur-xl bg-white/10 border border-white/20 text-sm hover:bg-white/20 transition-all font-semibold"
                 >
+                  <RotateCcw className="w-4 h-4" />
                   Рестарт
                 </motion.button>
-              )}
+              </div>
             </div>
           </div>
         </motion.div>
