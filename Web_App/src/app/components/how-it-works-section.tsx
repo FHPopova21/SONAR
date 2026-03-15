@@ -144,7 +144,7 @@ export function HowItWorksSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 backdrop-blur-xl bg-gradient-to-r from-white/[0.05] to-white/[0.08] border border-white/10 rounded-3xl p-8 text-center"
+          className="mt-16 backdrop-blur-md bg-gradient-to-r from-white/2 to-white/4 border border-white/5 rounded-3xl p-8 text-center"
         >
           <div className="flex items-center justify-center gap-3 mb-3">
             <div className="w-2 h-2 rounded-full bg-[#ff6b35] animate-pulse" />

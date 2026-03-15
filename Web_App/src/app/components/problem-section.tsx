@@ -66,7 +66,7 @@ export function ProblemSection() {
               />
 
               {/* Glass Card */}
-              <div className="relative backdrop-blur-xl bg-white/[0.05] border border-white/10 rounded-3xl p-8 h-full shadow-xl hover:bg-white/[0.08] transition-all duration-300">
+              <div className="relative backdrop-blur-md bg-white/2 border border-white/5 rounded-3xl p-8 h-full shadow-xl hover:bg-white/5 transition-all duration-300">
                 {/* Icon Container */}
                 <div
                   className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-lg"

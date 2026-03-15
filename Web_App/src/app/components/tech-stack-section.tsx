@@ -48,7 +48,7 @@ export function TechStackSection() {
               <div className="absolute inset-0 bg-gradient-to-br from-[#ff6b35] to-[#a855f7] opacity-0 group-hover:opacity-20 transition-opacity duration-500 rounded-2xl blur-2xl" />
 
               {/* Card */}
-              <div className="relative backdrop-blur-xl bg-white/[0.05] border border-white/10 rounded-2xl p-6 text-center hover:bg-white/[0.08] transition-all duration-300 aspect-square flex flex-col items-center justify-center gap-3">
+              <div className="relative backdrop-blur-md bg-white/2 border border-white/5 rounded-2xl p-6 text-center hover:bg-white/5 transition-all duration-300 aspect-square flex flex-col items-center justify-center gap-3">
                 <div className="text-5xl">{tech.logo}</div>
                 <span className="text-sm opacity-80" style={{ fontWeight: 600 }}>
                   {tech.name}
@@ -64,7 +64,7 @@ export function TechStackSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="mt-16 backdrop-blur-xl bg-gradient-to-r from-white/[0.05] to-white/[0.08] border border-white/10 rounded-3xl p-8"
+          className="mt-16 backdrop-blur-md bg-white/2 border border-white/5 rounded-3xl p-8"
         >
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>

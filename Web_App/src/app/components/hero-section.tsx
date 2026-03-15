@@ -7,14 +7,13 @@ export function HeroSection() {
       {/* Animated Glow Blobs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-40"
+          className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full opacity-30"
           style={{
             background: "radial-gradient(circle, #ec4899 0%, transparent 70%)",
-            filter: "blur(120px)",
+            filter: "blur(80px)",
           }}
           animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.3, 0.5, 0.3],
+            opacity: [0.2, 0.4, 0.2],
           }}
           transition={{
             duration: 8,
@@ -23,14 +22,13 @@ export function HeroSection() {
           }}
         />
         <motion.div
-          className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full opacity-40"
+          className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full opacity-30"
           style={{
             background: "radial-gradient(circle, #a855f7 0%, transparent 70%)",
-            filter: "blur(140px)",
+            filter: "blur(100px)",
           }}
           animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.4, 0.6, 0.4],
+            opacity: [0.3, 0.5, 0.3],
           }}
           transition={{
             duration: 10,
@@ -98,7 +96,7 @@ export function HeroSection() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="inline-block"
           >
-            
+
           </motion.div>
 
           {/* Geometric Accent */}
@@ -138,10 +136,10 @@ export function HeroSection() {
               <div className="relative mx-auto w-[280px] h-[550px] rounded-[3rem] bg-[#160f22] border-4 border-[#251b36] shadow-2xl overflow-hidden">
                 {/* Screen */}
                 <div className="absolute inset-0 bg-[#0d0914] overflow-hidden flex flex-col items-center px-[20px] py-[0px]">
-                  
+
                   {/* Soft Background Glow */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[60%] bg-[#7e203c] rounded-full blur-[80px] opacity-30" />
-                  
+
                   {/* Notch */}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-7 bg-[#160f22] rounded-b-3xl z-20" />
 
@@ -154,13 +152,13 @@ export function HeroSection() {
                   {/* Center Mic */}
                   <div className="flex-1 w-full flex flex-col items-center justify-center z-10 gap-16">
                     <div className="relative flex items-center justify-center mt-4">
-                      <motion.div 
+                      <motion.div
                         animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.6, 0.3] }}
                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                         className="absolute inset-0 bg-[#f97316]/30 rounded-full blur-2xl"
                       />
                       <div className="relative w-24 h-24 rounded-full border border-white/10 bg-white/5 flex items-center justify-center backdrop-blur-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fb923c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#fb923c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-[0_0_10px_rgba(251,146,60,0.8)]"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg>
                       </div>
                     </div>
 
@@ -197,17 +195,17 @@ export function HeroSection() {
                 <div className="absolute inset-0 bg-[#0d0914] overflow-hidden flex flex-col items-center justify-center">
                   {/* Soft Background Glow */}
                   <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] h-[150%] bg-[#f97316]/10 rounded-full blur-[40px] opacity-50" />
-                  
+
                   <div className="relative z-10 flex flex-col items-center gap-6">
                     {/* Center Mic */}
                     <div className="relative flex items-center justify-center">
-                      <motion.div 
+                      <motion.div
                         animate={{ scale: [1, 1.2, 1], opacity: [0.4, 0.7, 0.4] }}
                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
                         className="absolute inset-0 bg-[#f97316]/20 rounded-full blur-xl"
                       />
                       <div className="relative w-16 h-16 rounded-full border border-white/10 bg-white/5 flex items-center justify-center backdrop-blur-md">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbd38d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbd38d" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="drop-shadow-[0_0_8px_rgba(251,146,60,0.6)]"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z" /><path d="M19 10v2a7 7 0 0 1-14 0v-2" /><line x1="12" x2="12" y1="19" y2="22" /></svg>
                       </div>
                     </div>
 

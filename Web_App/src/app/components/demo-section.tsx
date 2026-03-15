@@ -24,7 +24,7 @@ export function DemoSection() {
   return (
     <section id="demo" className="relative py-24 px-6 md:px-12 lg:px-24 overflow-hidden">
       {/* Background Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[600px] bg-gradient-to-r from-[#a855f7] via-[#ec4899] to-[#ff6b35] opacity-10 blur-[200px]" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-gradient-to-r from-[#a855f7] via-[#ec4899] to-[#ff6b35] opacity-5 blur-[120px]" />
 
       <div className="relative z-10 max-w-6xl mx-auto">
         {/* Section Header */}
@@ -52,17 +52,19 @@ export function DemoSection() {
           className="relative group"
         >
           {/* Outer Glow */}
-          <div className="absolute inset-0 bg-gradient-to-br from-[#ff6b35] via-[#ec4899] to-[#a855f7] opacity-0 group-hover:opacity-30 transition-opacity duration-500 rounded-[2rem] blur-3xl" />
+          <div className="absolute inset-0 bg-gradient-to-br from-[#ff6b35] via-[#ec4899] to-[#a855f7] opacity-0 group-hover:opacity-10 transition-opacity duration-500 rounded-[2rem] blur-2xl" />
 
           {/* Glass Frame */}
-          <div className="relative backdrop-blur-xl bg-white/[0.05] border-2 border-white/10 rounded-[2rem] p-4 shadow-2xl">
+          <div className="relative backdrop-blur-lg bg-white/[0.03] border-2 border-white/5 rounded-[2rem] p-4 shadow-2xl">
             {/* Video Display Area */}
-            <div className="relative aspect-video bg-gradient-to-br from-purple-950/50 to-black rounded-2xl overflow-hidden">
+            <div className="relative aspect-video bg-gradient-to-br from-purple-950/30 to-black rounded-2xl overflow-hidden">
               <video
                 ref={videoRef}
                 className={`w-full h-full object-cover transition-opacity duration-700 ${isPlaying ? 'opacity-100' : 'opacity-0'}`}
                 src="/demo_sonar.mov"
                 playsInline
+                preload="metadata"
+                poster="/Sonar_logo.png"
                 onEnded={() => setIsPlaying(false)}
               />
 
