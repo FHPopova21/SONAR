@@ -35,12 +35,17 @@ export function Navbar() {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="hidden sm:block relative group px-6 py-2 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 backdrop-blur-xl rounded-[1.5rem] transition-all duration-300 shadow-[inset_0_0_15px_rgba(255,255,255,0.02)]">
+          <a
+            href="https://github.com/FHPopova21/SONAR/releases"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hidden sm:block relative group px-6 py-2 bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 backdrop-blur-xl rounded-[1.5rem] transition-all duration-300 shadow-[inset_0_0_15px_rgba(255,255,255,0.02)] no-underline"
+          >
             <div className="absolute inset-0 bg-gradient-to-r from-[#ff6b35]/20 to-[#ec4899]/20 rounded-[1.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <span className="relative text-white font-medium text-sm">
               Изтегли
             </span>
-          </button>
+          </a>
 
           {/* Mobile Menu Toggle */}
           <button

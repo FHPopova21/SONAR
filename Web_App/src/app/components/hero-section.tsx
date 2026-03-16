@@ -70,7 +70,7 @@ export function HeroSection() {
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 justify-center lg:justify-start w-full">
             <motion.a
-              href="https://github.com/FHPopova21/SONAR/actions"
+              href="https://github.com/FHPopova21/SONAR/releases"
               target="_blank"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
