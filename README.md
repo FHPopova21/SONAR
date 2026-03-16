@@ -9,6 +9,22 @@
 
 ---
 
+## 💻 Изтегляне за Windows (Desktop App)
+
+Готови ли сте да тествате AI модела локално на вашия компютър? Изтеглете официалната **версия 1.0** на нашето локално Windows приложение.
+
+Това издание съдържа пълната екосистема за AI разпознаване на звуци в реално време. Приложението използва **Edge AI (MobileNetV2)**, за да анализира и разпознава критични звуци от обкръжаващата среда напълно офлайн, защитавайки вашата поверителност на 100%.
+
+[![Download for Windows](https://img.shields.io/badge/Download_Latest-SONAR.exe-0078D6?style=for-the-badge&logo=windows)](ТУК_СЛОЖИ_ЛИНКА_КЪМ_ТВОЯ_RELEASE)
+
+### 🚀 Инструкции за стартиране:
+1. Кликнете на бутона по-горе (или отидете в секцията **Releases** вдясно) и изтеглете файла `SONAR.exe`.
+2. Стартирайте го с двоен клик.
+   > **⚠️ Важно:** Тъй като това е независим софтуер (няма платен корпоративен сертификат), Windows Defender най-вероятно ще покаже син екран за защита. За да продължите, кликнете на **More info** ➡️ **Run anyway**.
+3. Позволете достъп до микрофона, пуснете тестов звук (напр. сирена или бебешки плач) и вижте как системата го разпознава мигновено!
+
+---
+
 [![Swift](https://img.shields.io/badge/Swift-iOS_%7C_watchOS-FA7343?style=for-the-badge&logo=swift&logoColor=white)]()
 [![Python](https://img.shields.io/badge/Python-Backend-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
 [![React](https://img.shields.io/badge/React-Windows_UI-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)]()
