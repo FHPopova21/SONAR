@@ -18,8 +18,8 @@ export function Footer() {
             className="space-y-4"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ff6b35] to-[#ec4899] flex items-center justify-center">
-                <span className="text-xl" style={{ fontWeight: 700 }}>S</span>
+              <div className="w-8 h-8 rounded-lg overflow-hidden flex items-center justify-center shadow-[0_0_15px_rgba(255,107,53,0.4)]">
+                <img src="/Sonar_logo.jpg" alt="SONAR Logo" className="w-12 h-12 object-cover" />
               </div>
               <span className="text-2xl tracking-wider uppercase" style={{ fontWeight: 700 }}>
                 SONAR

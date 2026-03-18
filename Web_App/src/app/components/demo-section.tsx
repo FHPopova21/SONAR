@@ -64,7 +64,7 @@ export function DemoSection() {
                 src="/demo_sonar.mov"
                 playsInline
                 preload="metadata"
-                poster="/Sonar_logo.png"
+                poster="/Sonar_logo.jpg"
                 onEnded={() => setIsPlaying(false)}
               />
 

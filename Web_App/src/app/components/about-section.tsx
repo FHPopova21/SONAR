@@ -37,8 +37,8 @@ export function AboutSection() {
           transition={{ duration: 0.6, delay: 0.2 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-6 p-6 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-sm"
         >
-          <div className="w-20 h-20 rounded-full bg-gradient-to-tr from-[#ec4899] to-[#a855f7] flex items-center justify-center text-2xl font-bold shadow-lg">
-            ФП
+          <div className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center shadow-[0_0_15px_rgba(255,107,53,0.4)]">
+            <img src="/Sonar_logo.jpg" alt="SONAR Logo" className="w-24 h-24 object-cover" />
           </div>
           <div className="text-center sm:text-left">
             <h3 className="text-xl font-semibold">Филипа Попова</h3>
