@@ -72,19 +72,19 @@ export function Footer() {
             </h3>
             <div className="space-y-3">
               <a
-                href="mailto:[EMAIL_ADDRESS]"
+                href="mailto:fhpopova21@codingburgas.bg"
                 className="flex items-center gap-2 opacity-70 hover:opacity-100 transition-opacity group"
               >
                 <Mail className="w-4 h-4 group-hover:text-[#ff6b35] transition-colors" />
-                <span className="text-sm">[fhpopova21@codingburgas.bg]</span>
+                <span className="text-sm">fhpopova21@codingburgas.bg</span>
               </a>
             </div>
 
             {/* Social Icons */}
             <div className="flex gap-3 pt-4">
               {[
-                { icon: Github, href: "#" },
-                { icon: Mail, href: "#" },
+                { icon: Github, href: "https://github.com/FHPopova21/SONAR.git" },
+                { icon: Mail, href: "mailto:fhpopova21@codingburgas.bg" },
               ].map((social, i) => (
                 <motion.a
                   key={i}

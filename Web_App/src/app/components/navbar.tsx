@@ -10,6 +10,7 @@ export function Navbar() {
     { href: "#how-it-works", label: "Как работи" },
     { href: "#demo", label: "Демонстрация" },
     { href: "#tech", label: "Технологии" },
+    { href: "#about", label: "За проекта" },
   ];
 
   return (
